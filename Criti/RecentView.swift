@@ -22,41 +22,57 @@ struct RecentView: View {
                             RecentMovieListView(movie: movie)
                         }
                     }
-                    .padding([.horizontal, .bottom])
-                    .navigationTitle("Latest")
+                    .padding([.bottom])
+                    .navigationTitle("Recent")
                 }
                 .task {
-                    await viewModel.getRecentMovies()
+                    if Date.now.timeIntervalSince(viewModel.recentMoviesAge) > 60 {
+                        await viewModel.getRecentMovies()
+                    }
                 }
             }
-            .background(Color(red: 248 / 255, green: 244 / 255, blue: 214 / 255))
+            .refreshable(action: viewModel.getRecentMovies)
         }
         
     }
 }
 
 struct RecentMovieListView: View {
-    var movie: Movie // = Movie.example1
-    let topThreeRatingSources: [RatingSource] = [.tmdb, .imdb, .rottenTomatoes]
+    var movie: Movie
+    let topThreeRatingSources: [RatingSource] = [.tmdb, .imdb, .rottenTomatoes, .metacritic, .cinemascore]
 
     var body: some View {
         VStack {
             HStack {
                 Text(movie.title)
                     .font(.title2)
+                    .italic()
                 Spacer()
                 Image(systemName: "chevron.right")
             }
-                .padding(.bottom)
-            HStack {
-                ForEach(topThreeRatingSources, id: \.self) { ratingSource in
-                    CondensedRatingView(movie: movie, ratingSource: ratingSource)
+            .padding([.horizontal, .bottom])
+
+            HStack(spacing: 0) {
+                AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/w185\(movie.posterPath ?? "")")) { image in
+                    image.resizable()
+                } placeholder: { ProgressView() }
+                    .scaledToFit()
+                    .frame(width: 100)
+                    .padding(.leading)
+                    .shadow(radius: 10)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(alignment: .firstTextBaseline) {
+                        ForEach(topThreeRatingSources.filter( { movie.ratings[$0] ?? -1 >= 0 } ), id: \.self) { ratingSource in
+                            CondensedRatingView(movie: movie, ratingSource: ratingSource)
+                        }
+                    }
+                    .padding(.horizontal, 5)
                 }
             }
             Divider()
                 .padding(.top)
         }
-        // This is here to override the navigationlinks making everything blue. Obvi pick more appropriate colours later
+        .frame(height: 225)
         .foregroundColor(.primary)
     }
 }

@@ -9,22 +9,21 @@ import SwiftUI
 
 struct MainView: View {
     var body: some View {
-        VStack {
-            TabView {
-                RecentView()
-                    .tabItem {
-                        Label("Recent", systemImage: "calendar")
-                    }
-                SearchView()
-                    .tabItem {
-                        Label("Search", systemImage: "magnifyingglass")
-                    }
-                SettingsView()
-                    .tabItem {
-                        Label("Settings", systemImage: "gear")
+        TabView {
+            RecentView()
+                .tabItem {
+                    Label("Recent", systemImage: "calendar")
                 }
+            SearchView()
+                .tabItem {
+                    Label("Search", systemImage: "magnifyingglass")
+                }
+            SettingsView()
+                .tabItem {
+                    Label("Settings", systemImage: "gear")
             }
         }
+        
     }
 }
 

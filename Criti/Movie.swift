@@ -8,25 +8,82 @@
 import SwiftUI
 
 struct Movie: Identifiable, Codable {
-    var posterPath: String
-    var description: String
-    var id: Int
-    var title: String
-    var tmdbVoteAverage: Double
-    var tmdbVoteCount: Int
-    var imdbID = ""
-    var length = ""
+    var posterPath: String! = ""
+    var description: String = "No description available"
+    var id: Int = -1
+    var title: String = "Unknown title"
+    var tmdbVoteAverage: Double = -1
+    var tmdbVoteCount: Int = -1
+    var imdbID: String = ""
+    var length: String = "Unknown length"
     var genres: [String] = []
+    
+    var tmdbRating = TMDbRating()
+    var imdbRating = IMDbRating()
+    var rottenTomatoesRating = RottenTomatoesRating()
+    var metacriticRating = MetacriticRating()
+    var cinemascoreRating = CinemaScoreRating()
+    
+    //  THIS IS A PROBLEM! JSON DECODING STILL FAILS WHEN THERE'S NO DATE
+    var releaseDate: Date?
+    var wrappedReleaseDate: Date {
+        if releaseDate != nil {
+            return releaseDate!
+        } else { return Date.distantPast }
+    }
+    
     var ratings: [RatingSource: Double] = [.imdb: -1,
                                            .tmdb: -1,
                                            .rottenTomatoes: -1,
                                            .metacritic: -1,
-                                           .letterboxd: -1]
+                                           .letterboxd: -1,
+                                           .cinemascore: -1]
     var ratingCounts: [RatingSource: Int] = [.imdb: 0,
                                              .tmdb: 0,
                                              .rottenTomatoes: 0,
                                              .metacritic: 0,
                                              .letterboxd: 0]
+    
+    enum CodingKeys: String, CodingKey {
+        case posterPath = "poster_path"
+        case description = "overview"
+        case id
+        case title
+        case tmdbVoteAverage = "vote_average"
+        case tmdbVoteCount = "vote_count"
+        case releaseDate = "release_date"
+    }
+    
+    struct TMDbRating: Codable {
+        var audienceRating: Double = -1
+        var audienceRatingCount: Int = -1
+    }
+    
+    struct RottenTomatoesRating: Codable {
+        var criticRating: Int = -1
+        var criticRatingCount: Int = -1
+        var audienceRating: Int = -1
+        var audienceRatingCount: Int = -1
+        var criticConsensus: String = ""
+        var audienceConsensus: String = ""
+    }
+    
+    struct IMDbRating: Codable {
+        var averageRating: Int = -1
+        var ratingCount: Int = -1
+        /// IMDb does show rating histogram overall, and broken down for different demos. Could be something to look into.
+    }
+    
+    struct MetacriticRating: Codable {
+        var criticRating: Int = -1
+        var criticRatingCount: Int = -1
+        var audienceRating: Int = -1
+        var audienceRatingCount: Double = -1
+    }
+    
+    struct CinemaScoreRating: Codable {
+        var audienceRating: String = ""
+    }
     
     static let example1 = Movie(posterPath: "https://www.themoviedb.org/t/p/w1280/d5NXSklXo0qyIYkgV94XAgMIckC.jpg",
                                 description: """
@@ -37,27 +94,7 @@ struct Movie: Identifiable, Codable {
                                 tmdbVoteAverage: 7.8,
                                 tmdbVoteCount: 8029,
                                 length: "156 mins",
-                                ratings: [.imdb: 8.5, .rottenTomatoes: 90, .letterboxd: 4.2, .tmdb: 78])
-    static let example2 = Movie(posterPath: "https://www.themoviedb.org/t/p/w1280/eEVaW9GubVYKV2IQNWY3yYF3TFa.jpg",
-                                description: """
-                                            Three years after Mike bowed out of the stripper life at the top of his game, he and the remaining Kings of Tampa hit the road to Myrtle Beach to put on one last blow-out performance.
-                                            """,
-                                id: 987654321,
-                                title: "Magic Mike XXL",
-                                tmdbVoteAverage: 10.0,
-                                tmdbVoteCount: 1_000_000)
-    //                                length: 115,
-    //                                ratings: [RatingSource.imdb: 10, RatingSource.rottenTomatoes: 100, RatingSource.letterboxd: 5.0])
-    
-    
-    enum CodingKeys: String, CodingKey {
-        case posterPath = "poster_path"
-        case description = "overview"
-        case id
-        case title
-        case tmdbVoteAverage = "vote_average"
-        case tmdbVoteCount = "vote_count"
-    }
+                                ratings: [.imdb: 8.5, .rottenTomatoes: 90, .letterboxd: 4.2, .tmdb: 78, .cinemascore: 8])
 }
 
 

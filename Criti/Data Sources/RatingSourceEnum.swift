@@ -13,8 +13,5 @@ enum RatingSource: String, Codable {
     case letterboxd = "Letterboxd"
     case tmdb = "TMDb"
     case metacritic = "Metacritic"
-}
-
-enum RatingArrayKey {
-    case value, voteCount
+    case cinemascore = "Cinemascore"
 }

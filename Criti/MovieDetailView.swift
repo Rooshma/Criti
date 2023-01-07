@@ -19,7 +19,6 @@ struct MovieDetailView: View {
                             ForEach(movie.genres, id: \.self) { genre in
                                 Text(genre)
                             }
-                            /// Ultimately I think this would be good, but TMDB doesn't send length back with recent releases.
                             Text(movie.length)
                         }
                         .font(.caption)
@@ -30,12 +29,12 @@ struct MovieDetailView: View {
                             .padding(.top, 5.0)
                     }
                     Spacer()
-                    // TODO: FIX POSTER VERTICAL ALIGNMENT
-                    AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/w185\(movie.posterPath)")) { image in
+                    // TODO: FIX POSTER VERTICAL ALIGNMENT?
+                    AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/w185\(movie.posterPath!)")) { image in
                         image.resizable()
-                    } placeholder: { Color.gray }
+                    } placeholder: { ProgressView() }
                         .scaledToFit()
-                        .frame(width: 100, height: 200)
+                        .frame(width: 100, height: 150)
                 }
             }
             .navigationTitle(movie.title)
