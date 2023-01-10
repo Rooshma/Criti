@@ -28,16 +28,10 @@ struct SearchView: View {
                         MovieDetailView(movie: movie)
                     } label: {
                         HStack {
-                            AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/w185\(movie.posterPath ?? "")")) { image in
-                                image.resizable()
-                            } placeholder: { ProgressView() }
-                                .scaledToFit()
-                                .frame(width: 50, height: 75)
-                            /// This is, at best, half-finished, even if the search functionality gets fixed.
-                            Text("\(movie.title) (\(movie.wrappedReleaseDate)))")
-                                .task {
-                                    await viewModel.getRemainingMovieDetails()
+                            if movie.posterPath != nil && !movie.posterPath.isEmpty {
+                                PosterView(movie: movie, width: 50)
                             }
+                            Text("\(movie.title) (\(movie.wrappedReleaseYear))")
                         }
                     }
                 }

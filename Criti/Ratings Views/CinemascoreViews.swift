@@ -30,3 +30,9 @@ struct CinemascoreCondensedView: View {
         .frame(width: 50, height: 50)
     }
 }
+
+struct CinemascoreInfoView: View {
+    var body: some View {
+        Text("Cinemascore is...")
+    }
+}

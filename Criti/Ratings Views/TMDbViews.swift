@@ -46,8 +46,8 @@ struct TMDbExpandedView: View {
     }
 }
 
-struct Previews_TMDbViews_Previews: PreviewProvider {
-    static var previews: some View {
-        TMDbCondensedView(movie: Movie.example1, formattedRating: "80")
+struct TMDbInfoView: View {
+    var body: some View {
+        Text("TMDb is...")
     }
 }

@@ -13,7 +13,7 @@ struct MovieDetailView: View {
     var body: some View {
         ScrollView {
             VStack {
-                HStack(alignment: .top) {
+                HStack(alignment: .center) {
                     VStack(alignment: .leading) {
                         HStack {
                             ForEach(movie.genres, id: \.self) { genre in
@@ -30,11 +30,7 @@ struct MovieDetailView: View {
                     }
                     Spacer()
                     // TODO: FIX POSTER VERTICAL ALIGNMENT?
-                    AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/w185\(movie.posterPath!)")) { image in
-                        image.resizable()
-                    } placeholder: { ProgressView() }
-                        .scaledToFit()
-                        .frame(width: 100, height: 150)
+                    PosterView(movie: movie, width: 100)
                 }
             }
             .navigationTitle(movie.title)
@@ -44,8 +40,8 @@ struct MovieDetailView: View {
     }
 }
 
-struct MovieDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        MovieDetailView(movie: Movie.example1)
-    }
-}
+//struct MovieDetailView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MovieDetailView(movie: Movie.example1)
+//    }
+//}

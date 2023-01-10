@@ -41,3 +41,9 @@ struct MetacriticExpandedView: View {
         Text("Hi")
     }
 }
+
+struct MetacriticInfoView: View {
+    var body: some View {
+        Text("Metacritic is...")
+    }
+}

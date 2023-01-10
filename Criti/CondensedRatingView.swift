@@ -35,8 +35,8 @@ struct CondensedRatingView: View {
     }
 }
 
-struct CondensedRatingView_Previews: PreviewProvider {
-    static var previews: some View {
-        CondensedRatingView(movie: Movie.example1, ratingSource: .cinemascore)
-    }
-}
+//struct CondensedRatingView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CondensedRatingView(movie: Movie.example1, ratingSource: .cinemascore)
+//    }
+//}

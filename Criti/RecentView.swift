@@ -39,6 +39,9 @@ struct RecentView: View {
 
 struct RecentMovieListView: View {
     var movie: Movie
+    
+    /// The below array should be replaced with a live array that reflects the settings chosen by the user. I'm unsure how to do that.
+
     let topThreeRatingSources: [RatingSource] = [.tmdb, .imdb, .rottenTomatoes, .metacritic, .cinemascore]
 
     var body: some View {
@@ -53,11 +56,7 @@ struct RecentMovieListView: View {
             .padding([.horizontal, .bottom])
 
             HStack(spacing: 0) {
-                AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/w185\(movie.posterPath ?? "")")) { image in
-                    image.resizable()
-                } placeholder: { ProgressView() }
-                    .scaledToFit()
-                    .frame(width: 100)
+                PosterView(movie: movie, width: 100)
                     .padding(.leading)
                     .shadow(radius: 10)
                 ScrollView(.horizontal, showsIndicators: false) {
