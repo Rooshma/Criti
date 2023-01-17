@@ -14,6 +14,10 @@ struct RatingSourceDetailView: View {
         switch ratingSource {
             case .rottenTomatoes: RottenTomatoesInfoView()
             case .imdb: IMDbInfoView()
+            case .tmdb: TMDbInfoView()
+            case .letterboxd: LetterboxdInfoView()
+            case .cinemascore: CinemascoreInfoView()
+            case .metacritic: MetacriticInfoView()
             default: Text("N/A")
         }
     }

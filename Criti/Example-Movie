@@ -1,0 +1,17 @@
+
+{
+    "posterPath": "https://www.themoviedb.org/t/p/w1280/d5NXSklXo0qyIYkgV94XAgMIckC.jpg",
+    "description": "Feature adaptation of Frank Herbert's science fiction novel, about the son of a noble family entrusted with the protection of the most valuable asset and most vital element in the galaxy.",
+    "id": 123456789,
+    "title": "Dune",
+    "tmdbVoteAverage": 7.8,
+    "tmdbVoteCount": 8029,
+    "length": "156 mins",
+    "ratings": {
+        "imdb" : 8.5,
+        "rottenTomatoes": 90,
+        "letterboxd": 4.2,
+        "tmdb": 78,
+        "cinemascore": 8
+    }
+}

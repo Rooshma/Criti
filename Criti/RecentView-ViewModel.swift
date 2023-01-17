@@ -15,7 +15,7 @@ extension RecentView {
         
         var recentMoviesAge = Date.distantPast
         
-        /// I don't understand what @Sendable is/does. Investigate further.
+        // I don't understand what @Sendable is/does. Investigate further.
         @Sendable func getRecentMovies() async {
             guard let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(APIKeys.TMDB)&language=en-US&page=1") else { return }
             recentMovies = await TMDb.getMovies(from: url)
@@ -24,12 +24,14 @@ extension RecentView {
         }
         
         func getRemainingMovieDetails() async {
-            /// Change back to recentmovies.indices. Right now it's truncated to limit the number of calls.
+            // Change back to recentmovies.indices. Right now it's truncated to limit the number of calls.
             for i in recentMovies[0...2].indices {
                 insertTMDbRatings(i)
                 await getIMDbID(i)
                 await getOMDbData(i)
                 await getCinemascoreData(i)
+                await getLetterboxdRating(i)
+                await getRottenTomatoesRating(i)
             }
         }
         
@@ -52,6 +54,16 @@ extension RecentView {
         func getCinemascoreData(_ i: Int) async {
             let movie = recentMovies[i]
             recentMovies[i].ratings[.cinemascore] = await Cinemascore.getScore(for: movie)
+        }
+        
+        func getLetterboxdRating(_ i: Int) async {
+            let movie = recentMovies[i]
+            recentMovies[i].letterboxdRating = await Letterboxd.getAverageRating(for: movie)
+        }
+        
+        func getRottenTomatoesRating(_ i: Int) async {
+            let movie = recentMovies[i]
+            recentMovies[i].rottenTomatoesRating = await RottenTomatoes.getRatings(for: movie)
         }
         
     }

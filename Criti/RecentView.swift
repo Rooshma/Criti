@@ -24,9 +24,10 @@ struct RecentView: View {
                     }
                     .padding([.bottom])
                     .navigationTitle("Recent")
+                    .foregroundColor(Color("AccentColor"))
                 }
                 .task {
-                    if Date.now.timeIntervalSince(viewModel.recentMoviesAge) > 60 {
+                    if Date.now.timeIntervalSince(viewModel.recentMoviesAge) > 600 {
                         await viewModel.getRecentMovies()
                     }
                 }
@@ -38,11 +39,9 @@ struct RecentView: View {
 }
 
 struct RecentMovieListView: View {
-    var movie: Movie
+    @EnvironmentObject var settings: Settings
     
-    /// The below array should be replaced with a live array that reflects the settings chosen by the user. I'm unsure how to do that.
-
-    let topThreeRatingSources: [RatingSource] = [.tmdb, .imdb, .rottenTomatoes, .metacritic, .cinemascore]
+    var movie: Movie
 
     var body: some View {
         VStack {
@@ -53,15 +52,16 @@ struct RecentMovieListView: View {
                 Spacer()
                 Image(systemName: "chevron.right")
             }
-            .padding([.horizontal, .bottom])
+            .padding()
 
             HStack(spacing: 0) {
-                PosterView(movie: movie, width: 100)
+                PosterView(movie: movie)
+                    .frame(height: 150)
                     .padding(.leading)
                     .shadow(radius: 10)
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(alignment: .firstTextBaseline) {
-                        ForEach(topThreeRatingSources.filter( { movie.ratings[$0] ?? -1 >= 0 } ), id: \.self) { ratingSource in
+                    HStack(alignment: .center) {
+                        ForEach(settings.ratingSources, id: \.self) { ratingSource in
                             CondensedRatingView(movie: movie, ratingSource: ratingSource)
                         }
                     }

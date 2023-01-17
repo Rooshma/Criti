@@ -9,42 +9,87 @@ import SwiftUI
 
 struct RottenTomatoesCondensedView: View {
     let movie: Movie
-    let formattedRating: String
+//    let formattedRating: String
     
     var body: some View {
         VStack {
-            HStack {
-                switch movie.ratings[.rottenTomatoes]! {
-                    case 0..<60:
-                        Image("rtCriticsRottenIcon")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 40, height: 40)
-                    case 60...100:
-                        Image("rtCriticsFreshIcon")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 40, height: 40)
-                    default:
-                        Image("rtCriticsEmptyIcon")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 40, height: 40)
-                }
-                movie.ratings[.rottenTomatoes]! >= 0 ?
-                    Text(formattedRating + "%")
-                        .font(.title2) :
-                    Text("N/A")
-                        .font(.title3)
-                        .foregroundColor(.secondary)
-            }
+            Image("rtLogo")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 75)
+                .alignmentGuide(.midLogos) { d in d[VerticalAlignment.center] }
+            RottenTomatoesRatingIcon(rating: movie.rottenTomatoesRating.criticRating, type: .critic)
         }
     }
 }
 
 struct RottenTomatoesExpandedView: View {
+    let movie: Movie
+    
     var body: some View {
-        Text("Hi")
+        VStack(alignment: .leading) {
+            Image("rtLogo")
+                .resizable()
+                .scaledToFit()
+                .frame(height: 20)
+            HStack {
+                RottenTomatoesRatingIcon(rating: movie.rottenTomatoesRating.criticRating, type: .critic)
+                VStack(alignment: .leading) {
+                    Text("Critics consensus:")
+                        .bold()
+                    Text(movie.rottenTomatoesRating.criticConsensus)
+                }
+                .font(.caption)
+            }
+            Divider()
+            HStack {
+                RottenTomatoesRatingIcon(rating: movie.rottenTomatoesRating.audienceRating, type: .audience)
+                VStack(alignment: .leading) {
+                    Text("Audience consensus:")
+                        .bold()
+                    Text(movie.rottenTomatoesRating.audienceConsensus)
+                }
+                .font(.caption)
+            }
+        }
+        .padding()
+    }
+}
+
+struct RottenTomatoesRatingIcon: View {
+    let rating: Int
+    let type: RottenTomatoes.RatingType
+    var icon: String {
+        switch type {
+            case .critic:
+                switch rating {
+                    case 0..<60: return "rtCriticsRottenIcon"
+                    case 60...100: return "rtCriticsFreshIcon"
+                    default: return "rtCriticsEmptyIcon"
+                }
+            case .audience:
+                switch rating {
+                    case 0..<60: return "rtAudienceRottenIcon"
+                    case 60...100: return "rtAudienceFreshIcon"
+                    default: return "rtAudienceEmptyIcon"
+                }
+        }
+    }
+    
+    
+    var body: some View {
+        HStack {
+            Image(icon)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 30)
+            rating >= 0 ?
+            Text("\(rating.formatted())" + "%")
+                .font(.title2) :
+            Text("N/A")
+                .font(.title3)
+                .foregroundColor(.secondary)
+        }
     }
 }
 
@@ -55,14 +100,14 @@ struct RottenTomatoesInfoView: View {
                 .resizable()
                 .scaledToFit()
                 .padding(.bottom)
-            Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
+            Text("The Tomatometer rating – based on the published opinions of hundreds of film and television critics – is a trusted measurement of movie and TV programming quality for millions of moviegoers. It represents the percentage of professional critic reviews that are positive for a given film or television show.")
             Divider()
             HStack {
                 Image("rtCriticsFreshIcon")
                     .resizable()
                     .scaledToFit()
                     .frame(height: 50)
-                Text("Fresh means...")
+                Text("Fresh means that more than 60% of critics reviewed a film positively.")
             }
             Divider()
             HStack {
@@ -70,16 +115,9 @@ struct RottenTomatoesInfoView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(height: 50)
-                Text("Rotten means...")
+                Text("Rotten means that less than 60% of critics reviewed a film positively.")
             }
         }
         .padding(.horizontal)
-    }
-}
-
-
-struct Previews_RottenTomatoesViews_Previews: PreviewProvider {
-    static var previews: some View {
-        RottenTomatoesInfoView()
     }
 }

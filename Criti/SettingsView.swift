@@ -10,22 +10,23 @@ import SwiftUI
 struct SettingsView: View {
     @StateObject var viewModel = ViewModel()
     @State private var editingSources = false
+    @EnvironmentObject var settings: Settings
     
     var body: some View {
         NavigationView {
             ZStack {
                 List {
                     Section(header: Text("Included rating sources")) {
-                        ForEach(viewModel.ratingSources, id: \.self) { ratingSource in
+                        ForEach(viewModel.settings.ratingSources, id: \.self) { ratingSource in
                             HStack {
                                 if editingSources {
                                     Image(systemName: "minus.circle.fill")
                                         .foregroundColor(.red)
-                                        .onTapGesture {
-                                            withAnimation {
-                                                viewModel.removeRatingSource(ratingSource)
-                                            }
-                                        }
+//                                        .onTapGesture {
+//                                            withAnimation {
+//                                                viewModel.removeRatingSource(ratingSource)
+//                                            }
+//                                        }
                                 }
                                 NavigationLink {
                                     RatingSourceDetailView(ratingSource: ratingSource)
@@ -37,9 +38,10 @@ struct SettingsView: View {
                         .onMove { origin, destination in
                             viewModel.moveRatingSource(from: origin, to: destination)
                         }
+                        .onDelete(perform: viewModel.removeRatingSource)
                     }
                     Section(header: Text("Excluded rating sources")) {
-                        ForEach(viewModel.unusedRatingSources, id: \.self) { ratingSource in
+                        ForEach(viewModel.settings.unusedRatingSources, id: \.self) { ratingSource in
                             HStack {
                                 if editingSources {
                                     Image(systemName: "plus.circle.fill")

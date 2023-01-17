@@ -1,0 +1,47 @@
+//
+//  RottenTomatoes.swift
+//  Criti
+//
+//  Created by Mark Roosma on 2023-01-14.
+//
+
+import Foundation
+import SwiftSoup
+
+struct RottenTomatoes {
+    
+    static func getRatings(for movie: Movie) async -> Movie.RottenTomatoesRating {
+        let urlTitle = movie.title.lowercased().removeCharacters(from: .punctuationCharacters).replacingOccurrences(of: " ", with: "_")
+        do {
+            if let url = URL(string: "https://www.rottentomatoes.com/m/\(urlTitle)") {
+                let (data, _) = try await URLSession.shared.data(from: url)
+                let html = String(data: data, encoding: .utf8) ?? ""
+                let doc: Document = try SwiftSoup.parse(html)
+                
+                // Zoom in on scoreboard section of the document, get critic and audience ratings, certified fresh status
+                let scoreBoard = try doc.getElementsByTag("score-board")
+                let criticRating = try Int(scoreBoard.attr("tomatometerscore")) ?? -1
+                let criticRatingCount = try Int(scoreBoard.select("a").first()?.text().removeCharacters(from: .decimalDigits.inverted) ?? "") ?? -1
+                let audienceRating = try Int(scoreBoard.attr("audiencescore")) ?? -1
+                let audienceRatingCount = try Int(scoreBoard.select("a").last()?.text().removeCharacters(from: .decimalDigits.inverted) ?? "") ?? -1
+                let certifiedFresh = try scoreBoard.attr("tomatometerstate") == "certified-fresh"
+                
+                // Zoom in on what to know section of the document, get critic and audience consensus text
+                let whatToKnow = try doc.select("p.what-to-know__section-body")
+                let criticConsensus = try whatToKnow.select("span").first()?.text() ?? ""
+                let audienceConsensus = try whatToKnow.select("span").last()?.text() ?? ""
+                
+                return Movie.RottenTomatoesRating(criticRating: criticRating, criticRatingCount: criticRatingCount,
+                                                  audienceRating: audienceRating, audienceRatingCount: audienceRatingCount,
+                                                  criticConsensus: criticConsensus, audienceConsensus: audienceConsensus)
+            }
+        } catch {
+            print("Error getting Rotten Tomatoes rating")
+        }
+        return Movie.RottenTomatoesRating()
+    }
+    
+    enum RatingType {
+        case critic, audience
+    }
+}

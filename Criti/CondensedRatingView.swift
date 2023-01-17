@@ -13,25 +13,29 @@ struct CondensedRatingView: View {
     var formattedRating: String { movie.ratings[ratingSource]!.formatted() }
     
     var body: some View {
-        HStack {
-            Spacer()
-            VStack {
-                Text(ratingSource.rawValue)
-                    .font(.footnote)
-                Spacer()
-                switch ratingSource {
-                    case .tmdb: TMDbCondensedView(movie: movie, formattedRating: formattedRating)
-                    case .imdb: IMDbCondensedView(movie: movie, formattedRating: formattedRating)
-                    case .rottenTomatoes: RottenTomatoesCondensedView(movie: movie, formattedRating: formattedRating)
-                    case .metacritic: MetacriticCondensedView(movie: movie, formattedRating: formattedRating)
-                    case .cinemascore: CinemascoreCondensedView(movie: movie)
-                    default:
-                        Text("Error")
-                }
-                Spacer()
+        ZStack {
+            RoundedRectangle(cornerRadius: 5)
+                .opacity(0.15)
+//            HStack {
+//                Spacer()
+//                VStack {
+//                    Spacer()
+                    switch ratingSource {
+                        case .tmdb: TMDbCondensedView(movie: movie, formattedRating: formattedRating)
+                        case .imdb: IMDbCondensedView(movie: movie, formattedRating: formattedRating)
+                        case .rottenTomatoes: RottenTomatoesCondensedView(movie: movie)
+                        case .metacritic: MetacriticCondensedView(movie: movie, formattedRating: formattedRating)
+                        case .cinemascore: CinemascoreCondensedView(movie: movie)
+                        case .letterboxd: LetterboxdCondensedView(movie: movie)
+                        default:
+                            Text("Error")
+//                    }
+//                    Spacer()
+//                }
+//                Spacer()
             }
-            Spacer()
         }
+        .frame(width: 100, height: 150)
     }
 }
 

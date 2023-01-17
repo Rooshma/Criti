@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct MainView: View {
+    @StateObject var settings = Settings()
+    
     var body: some View {
         TabView {
             RecentView()
@@ -23,6 +25,7 @@ struct MainView: View {
                     Label("Settings", systemImage: "gear")
             }
         }
+        .environmentObject(settings)
         
     }
 }

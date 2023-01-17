@@ -29,7 +29,8 @@ struct SearchView: View {
                     } label: {
                         HStack {
                             if movie.posterPath != nil && !movie.posterPath.isEmpty {
-                                PosterView(movie: movie, width: 50)
+                                PosterView(movie: movie)
+                                    .frame(width: 50)
                             }
                             Text("\(movie.title) (\(movie.wrappedReleaseYear))")
                         }

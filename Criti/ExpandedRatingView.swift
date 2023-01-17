@@ -8,13 +8,23 @@
 import SwiftUI
 
 struct ExpandedRatingView: View {
+    let movie: Movie
+    let ratingSource: RatingSource
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-struct ExpandedRatingView_Previews: PreviewProvider {
-    static var previews: some View {
-        ExpandedRatingView()
+        ZStack {
+            RoundedRectangle(cornerRadius: 5)
+                .opacity(0.15)
+            switch ratingSource {
+                case .tmdb: TMDbExpandedView()
+                case .imdb: IMDbExpandedView()
+                case .rottenTomatoes: RottenTomatoesExpandedView(movie: movie)
+                case .metacritic: MetacriticExpandedView()
+                case .cinemascore: CinemascoreCondensedView(movie: movie).padding()
+                case .letterboxd: LetterboxdExpandedView(movie: movie)
+                default:
+                    Text("Error")
+            }
+        }
     }
 }

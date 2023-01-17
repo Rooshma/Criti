@@ -14,12 +14,14 @@ extension SearchView {
         @Published var results: [Movie] = []
         
         func getResults(for title: String) async {
-            guard let url = URL(string: "https://api.themoviedb.org/3/search/movie?api_key=\(APIKeys.TMDB)&language=en-US&query=\(title)&page=1&include_adult=false") else { return }
+            guard let url = URL(string: "https://api.themoviedb.org/3/search/movie?api_key=\(APIKeys.TMDB)&language=en-US&query=\(title.replacingOccurrences(of: " ", with: "%20"))&page=1&include_adult=false") else { return }
             results = await TMDb.getMovies(from: url)
+            await getRemainingMovieDetails()
         }
         
         func getRemainingMovieDetails() async {
-            /// Change back to recentmovies.indices. Right now it's truncated to limit the number of calls.
+            // Change back to recentmovies.indices. Right now it's truncated to limit the number of calls.
+            // **** THIS IS BUSTED! WORKS FINE FOR RECENT VIEW, BUT NOT FOR SEARCH. *****
             for i in results[0...2].indices {
                 insertTMDbRatings(i)
                 await getIMDbID(i)

@@ -31,7 +31,7 @@ struct TMDb: Codable {
             let jsonResponse = try decoder.decode(TMDb.QueryResponse.self, from: data)
             return jsonResponse.results
         } catch {
-            print("Error getting or decoding JSON")
+            print("Error getting or decoding JSON from TMDb")
             print(error)
         }
         return []

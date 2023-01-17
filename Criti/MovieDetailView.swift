@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MovieDetailView: View {
     let movie: Movie
+    let ratingSources: [RatingSource] = [.rottenTomatoes, .letterboxd, .cinemascore]
     
     var body: some View {
         ScrollView {
@@ -30,7 +31,11 @@ struct MovieDetailView: View {
                     }
                     Spacer()
                     // TODO: FIX POSTER VERTICAL ALIGNMENT?
-                    PosterView(movie: movie, width: 100)
+                    PosterView(movie: movie)
+                        .frame(width: 100)
+                }
+                ForEach(ratingSources, id: \.self) { ratingSource in
+                    ExpandedRatingView(movie: movie, ratingSource: ratingSource)
                 }
             }
             .navigationTitle(movie.title)
