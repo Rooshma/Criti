@@ -25,6 +25,7 @@ extension RecentView {
         
         func getRemainingMovieDetails() async {
             // Change back to recentmovies.indices. Right now it's truncated to limit the number of calls.
+            // Could also probably just do let movie = recentMovies[i] at the beginning and just... make it all one function. Honestly simpler at that point.
             for i in recentMovies[0...2].indices {
                 insertTMDbRatings(i)
                 await getIMDbID(i)
@@ -32,6 +33,7 @@ extension RecentView {
                 await getCinemascoreData(i)
                 await getLetterboxdRating(i)
                 await getRottenTomatoesRating(i)
+                await getMetacriticRating(i)
             }
         }
         
@@ -53,17 +55,22 @@ extension RecentView {
         
         func getCinemascoreData(_ i: Int) async {
             let movie = recentMovies[i]
-            recentMovies[i].ratings[.cinemascore] = await Cinemascore.getScore(for: movie)
+            recentMovies[i].ratings[.cinemascore] = await Cinemascore.getRatings(for: movie)
         }
         
         func getLetterboxdRating(_ i: Int) async {
             let movie = recentMovies[i]
-            recentMovies[i].letterboxdRating = await Letterboxd.getAverageRating(for: movie)
+            recentMovies[i].letterboxdRating = await Letterboxd.getRatings(for: movie)
         }
         
         func getRottenTomatoesRating(_ i: Int) async {
             let movie = recentMovies[i]
             recentMovies[i].rottenTomatoesRating = await RottenTomatoes.getRatings(for: movie)
+        }
+        
+        func getMetacriticRating(_ i: Int) async {
+            let movie = recentMovies[i]
+            recentMovies[i].metacriticRating = await Metacritic.getRatingFor(movie)
         }
         
     }

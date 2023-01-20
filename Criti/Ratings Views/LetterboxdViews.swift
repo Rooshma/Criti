@@ -82,7 +82,14 @@ struct LetterboxdExpandedView: View {
                 Spacer()
                 if let mostCommonRating = movie.letterboxdRating.histogram.max() {
                     ForEach(movie.letterboxdRating.histogram, id: \.self) { rating in
-                        HistogramBar(rating: rating, mostCommonRating: mostCommonRating)
+                        GeometryReader { geo in
+                            VStack {
+                                Spacer()
+                                Rectangle()
+                                    .frame(height: geo.size.height * CGFloat(Double(rating) / Double(mostCommonRating)) * 0.9)
+                                    .foregroundColor(Color("LBGreen"))
+                            }
+                        }
                     }
                 }
                 Spacer()
@@ -101,21 +108,22 @@ struct LetterboxdExpandedView: View {
     }
 }
 
-struct HistogramBar: View {
-    let rating: Int
-    let mostCommonRating: Int
-    
-    var body: some View {
-        GeometryReader { geo in
-            VStack {
-                Spacer()
-                Rectangle()
-                    .frame(height: geo.size.height / CGFloat(mostCommonRating / rating) * 0.9)
-                    .foregroundColor(Color("LBGreen"))
-            }
-        }
-    }
-}
+// This could be useful if histogram bars need to be recreated in other places. As is, it may be unnecessary.
+//struct HistogramBar: View {
+//    let rating: Int
+//    let mostCommonRating: Int
+//
+//    var body: some View {
+//        GeometryReader { geo in
+//            VStack {
+//                Spacer()
+//                Rectangle()
+//                    .frame(height: geo.size.height * CGFloat(Double(rating) / Double(mostCommonRating)) * 0.9)
+//                    .foregroundColor(Color("LBGreen"))
+//            }
+//        }
+//    }
+//}
 
 struct LetterboxdInfoView: View {
     @Environment(\.colorScheme) var colorScheme

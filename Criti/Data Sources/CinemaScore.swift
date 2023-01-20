@@ -48,7 +48,7 @@ struct Cinemascore {
         
     }
     
-    static func getScore(for movie: Movie) async -> Double {
+    static func getRatings(for movie: Movie) async -> Double {
         let urlAppropriateTitle = Data(movie.title.utf8).base64EncodedString()
         guard let url = URL(string: "https://api.cinemascore.com/guest/search/title/\(urlAppropriateTitle)") else { return -1 }
         

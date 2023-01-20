@@ -38,20 +38,20 @@ struct OMDb: Codable {
             
             for rating in jsonResponse.ratings {
                 switch rating["Source"] {
-                    case "Rotten Tomatoes":
-                        let trimmedRating = rating["Value"]?.dropLast(1)
-                        movie.ratings[.rottenTomatoes] = Double(trimmedRating ?? "0")
+//                    case "Rotten Tomatoes":
+//                        let trimmedRating = rating["Value"]?.dropLast(1)
+//                        movie.ratings[.rottenTomatoes] = Double(trimmedRating ?? "0")
                     case "Internet Movie Database":
                         let trimmedRating = rating["Value"]?.dropLast(3)
                         movie.ratings[.imdb] = Double(trimmedRating ?? "0")
                         if let imdbVoteCount = Int(jsonResponse.imdbVotes.filter( { $0 != "," } )) {
                         movie.ratingCounts[.imdb] = imdbVoteCount
                         }
-                    case "Metacritic":
-                        let trimmedRating = rating["Value"]?.dropLast(4)
-                        movie.ratings[.metacritic] = Double(trimmedRating ?? "0")
+//                    case "Metacritic":
+//                        let trimmedRating = rating["Value"]?.dropLast(4)
+//                        movie.ratings[.metacritic] = Double(trimmedRating ?? "0")
                     default:
-                        print("No ratings")
+                        print("OMDb Skipped rating: \(rating)")
                 }
             }
         } catch {

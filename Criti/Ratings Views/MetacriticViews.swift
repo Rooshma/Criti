@@ -13,7 +13,7 @@ struct MetacriticCondensedView: View {
     let movie: Movie
     let formattedRating: String
     var fillColor: Color {
-        switch movie.ratings[.metacritic]! {
+        switch movie.metacriticRating.criticRating {
             case 70...100: return Color("MCGreen")
             case 40..<70: return Color("MCYellow")
             case 0..<40: return Color("MCRed")
@@ -27,13 +27,14 @@ struct MetacriticCondensedView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 75)
+            // midLogos alignment guide might be unnecessary now. Consider deleting.
                 .alignmentGuide(.midLogos) { d in d[VerticalAlignment.center] }
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
                     .fill(fillColor)
                     .frame(width: 50, height: 50)
-                if movie.ratings[.metacritic]! >= 0 {
-                    Text(formattedRating)
+                if movie.metacriticRating.criticRating >= 0 {
+                    Text(movie.metacriticRating.criticRating.formatted())
                         .font(.custom("Arial", size: 25))
                 } else {
                     Text("N/A")
@@ -41,12 +42,69 @@ struct MetacriticCondensedView: View {
             }
             .foregroundColor(.white)
         }
+        .padding()
     }
 }
 
 struct MetacriticExpandedView: View {
+    @Environment(\.colorScheme) var colorScheme
+    
+    let movie: Movie
+    
+    var criticFillColor: Color {
+        switch movie.metacriticRating.criticRating {
+            case 70...100: return Color("MCGreen")
+            case 40..<70: return Color("MCYellow")
+            case 0..<40: return Color("MCRed")
+            default: return Color("MCGray")
+        }
+    }
+    var audienceFillColor: Color {
+        switch movie.metacriticRating.audienceRating {
+            case 70...100: return Color("MCGreen")
+            case 40..<70: return Color("MCYellow")
+            case 0..<40: return Color("MCRed")
+            default: return Color("MCGray")
+        }
+    }
+    
     var body: some View {
-        Text("Hi")
+        VStack(alignment: .leading) {
+            Image(colorScheme == .light ? "mcLogoDark" : "mcLogoLight")
+                .resizable()
+                .scaledToFit()
+                .frame(height: 20)
+            HStack {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(criticFillColor)
+                        .frame(width: 50, height: 50)
+                    if movie.metacriticRating.criticRating >= 0 {
+                        Text(movie.metacriticRating.criticRating.formatted())
+                            .font(.custom("Arial", size: 25))
+                    } else {
+                        Text("N/A")
+                    }
+                }
+                Text("Based on \(movie.metacriticRating.criticRatingCount) reviews.")
+                Spacer()
+            }
+            HStack {
+                ZStack {
+                    Circle()
+                        .fill(audienceFillColor)
+                        .frame(width: 50, height: 50)
+                    if movie.metacriticRating.audienceRating >= 0 {
+                        Text(movie.metacriticRating.audienceRating.formatted())
+                            .font(.custom("Arial", size: 25))
+                    } else {
+                        Text("N/A")
+                    }
+                }
+                Text("Based on \(movie.metacriticRating.audienceRatingCount) reviews.")
+            }
+        }
+        .padding()
     }
 }
 

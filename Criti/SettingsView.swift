@@ -17,7 +17,7 @@ struct SettingsView: View {
             ZStack {
                 List {
                     Section(header: Text("Included rating sources")) {
-                        ForEach(viewModel.settings.ratingSources, id: \.self) { ratingSource in
+                        ForEach(settings.ratingSources, id: \.self) { ratingSource in
                             HStack {
                                 if editingSources {
                                     Image(systemName: "minus.circle.fill")

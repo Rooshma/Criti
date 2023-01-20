@@ -19,7 +19,7 @@ struct ExpandedRatingView: View {
                 case .tmdb: TMDbExpandedView()
                 case .imdb: IMDbExpandedView()
                 case .rottenTomatoes: RottenTomatoesExpandedView(movie: movie)
-                case .metacritic: MetacriticExpandedView()
+                case .metacritic: MetacriticExpandedView(movie: movie)
                 case .cinemascore: CinemascoreCondensedView(movie: movie).padding()
                 case .letterboxd: LetterboxdExpandedView(movie: movie)
                 default:

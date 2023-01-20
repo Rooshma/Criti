@@ -10,7 +10,7 @@ import SwiftSoup
 
 struct Letterboxd {
     
-    static func getAverageRating(for movie: Movie) async -> Movie.LetterboxdRating {
+    static func getRatings(for movie: Movie) async -> Movie.LetterboxdRating {
         let urlTitle = movie.title.lowercased().removeCharacters(from: .punctuationCharacters).replacingOccurrences(of: " ", with: "-")
         do {
             if let url = URL(string: "https://letterboxd.com/csi/film/\(urlTitle)/rating-histogram/") {

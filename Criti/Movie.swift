@@ -99,7 +99,7 @@ struct Movie: Identifiable, Codable {
         var criticRating: Int = -1
         var criticRatingCount: Int = -1
         var audienceRating: Int = -1
-        var audienceRatingCount: Double = -1
+        var audienceRatingCount: Int = -1
     }
     
     struct CinemaScoreRating: Codable {

@@ -48,7 +48,7 @@ extension SearchView {
         
         func getCinemascoreData(_ i: Int) async {
             let movie = results[i]
-            results[i].ratings[.cinemascore] = await Cinemascore.getScore(for: movie)
+            results[i].ratings[.cinemascore] = await Cinemascore.getRatings(for: movie)
         }
         
     }

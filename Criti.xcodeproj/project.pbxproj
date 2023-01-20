@@ -37,6 +37,7 @@
 		4DB80FBB27FE161800E22809 /* CritiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DB80FBA27FE161800E22809 /* CritiTests.swift */; };
 		4DB80FC527FE161800E22809 /* CritiUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DB80FC427FE161800E22809 /* CritiUITests.swift */; };
 		4DB80FC727FE161800E22809 /* CritiUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DB80FC627FE161800E22809 /* CritiUITestsLaunchTests.swift */; };
+		4DBD1C702978ED7E006B666B /* Metacritic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DBD1C6F2978ED7E006B666B /* Metacritic.swift */; };
 		4DC3F0E3297324FE00AA8734 /* RottenTomatoes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC3F0E2297324FE00AA8734 /* RottenTomatoes.swift */; };
 		4DD75769296B4F31009684CB /* PosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD75768296B4F31009684CB /* PosterView.swift */; };
 		4DDB2C90293970E800264A56 /* MovieDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DDB2C8F293970E800264A56 /* MovieDetailView.swift */; };
@@ -95,6 +96,7 @@
 		4DB80FC027FE161800E22809 /* CritiUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CritiUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DB80FC427FE161800E22809 /* CritiUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CritiUITests.swift; sourceTree = "<group>"; };
 		4DB80FC627FE161800E22809 /* CritiUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CritiUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		4DBD1C6F2978ED7E006B666B /* Metacritic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metacritic.swift; sourceTree = "<group>"; };
 		4DC3F0E2297324FE00AA8734 /* RottenTomatoes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RottenTomatoes.swift; sourceTree = "<group>"; };
 		4DD75768296B4F31009684CB /* PosterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterView.swift; sourceTree = "<group>"; };
 		4DDB2C8F293970E800264A56 /* MovieDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailView.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				4D429F37293D529D0069BC95 /* TMDb.swift */,
 				4D2BDC692946B56300FBB29D /* OMDb.swift */,
 				4DC3F0E2297324FE00AA8734 /* RottenTomatoes.swift */,
+				4DBD1C6F2978ED7E006B666B /* Metacritic.swift */,
 				4D071731296E1CF700DC5CFC /* Letterboxd.swift */,
 				4D38C76729455D6600460BC6 /* Keys.swift */,
 				4D2BDC672946B1CF00FBB29D /* RatingSourceEnum.swift */,
@@ -382,6 +385,7 @@
 				4D38C76829455D6600460BC6 /* Keys.swift in Sources */,
 				4D34158C2938026F00D3B722 /* SearchView.swift in Sources */,
 				4DB80FAC27FE161500E22809 /* MainView.swift in Sources */,
+				4DBD1C702978ED7E006B666B /* Metacritic.swift in Sources */,
 				4D2BDC682946B1CF00FBB29D /* RatingSourceEnum.swift in Sources */,
 				4D071732296E1CF700DC5CFC /* Letterboxd.swift in Sources */,
 				4DD75769296B4F31009684CB /* PosterView.swift in Sources */,
