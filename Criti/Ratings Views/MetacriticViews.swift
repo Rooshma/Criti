@@ -12,14 +12,6 @@ struct MetacriticCondensedView: View {
     
     let movie: Movie
     let formattedRating: String
-    var fillColor: Color {
-        switch movie.metacriticRating.criticRating {
-            case 70...100: return Color("MCGreen")
-            case 40..<70: return Color("MCYellow")
-            case 0..<40: return Color("MCRed")
-            default: return Color("MCGray")
-        }
-    }
     
     var body: some View {
         VStack {
@@ -31,16 +23,17 @@ struct MetacriticCondensedView: View {
                 .alignmentGuide(.midLogos) { d in d[VerticalAlignment.center] }
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(fillColor)
+                    .fill(metacriticFillColor(for: movie.metacriticRating.criticRating))
                     .frame(width: 50, height: 50)
                 if movie.metacriticRating.criticRating >= 0 {
                     Text(movie.metacriticRating.criticRating.formatted())
-                        .font(.custom("Arial", size: 25))
+//                        .font(.custom("Arial", size: 25))
                 } else {
-                    Text("N/A")
+                    Text("tbd")
                 }
             }
             .foregroundColor(.white)
+            .font(.custom("Arial", size: 25))
         }
         .padding()
     }
@@ -51,58 +44,60 @@ struct MetacriticExpandedView: View {
     
     let movie: Movie
     
-    var criticFillColor: Color {
-        switch movie.metacriticRating.criticRating {
-            case 70...100: return Color("MCGreen")
-            case 40..<70: return Color("MCYellow")
-            case 0..<40: return Color("MCRed")
-            default: return Color("MCGray")
-        }
-    }
-    var audienceFillColor: Color {
-        switch movie.metacriticRating.audienceRating {
-            case 70...100: return Color("MCGreen")
-            case 40..<70: return Color("MCYellow")
-            case 0..<40: return Color("MCRed")
-            default: return Color("MCGray")
-        }
-    }
-    
     var body: some View {
-        VStack(alignment: .leading) {
-            Image(colorScheme == .light ? "mcLogoDark" : "mcLogoLight")
-                .resizable()
-                .scaledToFit()
-                .frame(height: 20)
+        VStack {
+            
+            HStack {
+                Image(colorScheme == .light ? "mcLogoDark" : "mcLogoLight")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 20)
+                Spacer()
+            }
+            .padding(.bottom)
+            
             HStack {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
-                        .fill(criticFillColor)
+                        .fill(metacriticFillColor(for: movie.metacriticRating.criticRating))
                         .frame(width: 50, height: 50)
-                    if movie.metacriticRating.criticRating >= 0 {
-                        Text(movie.metacriticRating.criticRating.formatted())
-                            .font(.custom("Arial", size: 25))
-                    } else {
-                        Text("N/A")
-                    }
+                    movie.metacriticRating.criticRating >= 0 ? Text(movie.metacriticRating.criticRating.formatted()) : Text("tbd")
                 }
-                Text("Based on \(movie.metacriticRating.criticRatingCount) reviews.")
-                Spacer()
+                .font(.custom("Arial", size: 25))
+                
+                VStack(alignment: .leading) {
+                    Group {
+                        Text("METASCORE")
+                            .padding(.bottom, 1)
+                        Text(Metacritic.consensusPhrase(for: movie.metacriticRating.criticRating))
+                        Text("Based on \(movie.metacriticRating.criticRatingCount) reviews")
+                    }
+                    .font(.custom("Arial", size: 15))
+                }
             }
+            
+            Divider()
+            
             HStack {
                 ZStack {
                     Circle()
-                        .fill(audienceFillColor)
+                        .fill(metacriticFillColor(for: movie.metacriticRating.audienceRating))
                         .frame(width: 50, height: 50)
-                    if movie.metacriticRating.audienceRating >= 0 {
-                        Text(movie.metacriticRating.audienceRating.formatted())
-                            .font(.custom("Arial", size: 25))
-                    } else {
-                        Text("N/A")
-                    }
+                    movie.metacriticRating.audienceRating >= 0 ? Text(movie.metacriticRating.audienceRating.formatted()) : Text("tbd")
                 }
-                Text("Based on \(movie.metacriticRating.audienceRatingCount) reviews.")
+                .font(.custom("Arial", size: 25))
+
+                VStack(alignment: .leading) {
+                    Group {
+                        Text("USER SCORE")
+                            .padding(.bottom, 1)
+                        Text(Metacritic.consensusPhrase(for: movie.metacriticRating.criticRating))
+                        Text("Based on \(movie.metacriticRating.audienceRatingCount) reviews")
+                    }
+                    .font(.custom("Arial", size: 15))
+                }
             }
+            
         }
         .padding()
     }
@@ -120,5 +115,14 @@ struct MetacriticInfoView: View {
             Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
         }
         .padding(.horizontal)
+    }
+}
+
+func metacriticFillColor(for rating: Int) -> Color {
+    switch rating {
+        case 60...100: return Color("MCGreen")
+        case 40..<60: return Color("MCYellow")
+        case 0..<40: return Color("MCRed")
+        default: return Color("MCGray")
     }
 }

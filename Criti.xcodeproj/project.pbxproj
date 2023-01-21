@@ -96,6 +96,7 @@
 		4DB80FC027FE161800E22809 /* CritiUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CritiUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DB80FC427FE161800E22809 /* CritiUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CritiUITests.swift; sourceTree = "<group>"; };
 		4DB80FC627FE161800E22809 /* CritiUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CritiUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		4DB923EC297B7F50006AEDB6 /* TODO.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TODO.md; sourceTree = "<group>"; };
 		4DBD1C6F2978ED7E006B666B /* Metacritic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metacritic.swift; sourceTree = "<group>"; };
 		4DC3F0E2297324FE00AA8734 /* RottenTomatoes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RottenTomatoes.swift; sourceTree = "<group>"; };
 		4DD75768296B4F31009684CB /* PosterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterView.swift; sourceTree = "<group>"; };
@@ -182,6 +183,7 @@
 		4DB80FA827FE161500E22809 /* Criti */ = {
 			isa = PBXGroup;
 			children = (
+				4DB923EC297B7F50006AEDB6 /* TODO.md */,
 				4DB80FA927FE161500E22809 /* CritiApp.swift */,
 				4DB80FAB27FE161500E22809 /* MainView.swift */,
 				4D3415872938023E00D3B722 /* RecentView.swift */,
