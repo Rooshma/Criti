@@ -9,7 +9,6 @@ import SwiftUI
 
 struct IMDbCondensedView: View {
     let movie: Movie
-    let formattedRating: String
     
     var body: some View {
         VStack {
@@ -17,14 +16,13 @@ struct IMDbCondensedView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 60)
-                .alignmentGuide(.midLogos) { d in d[VerticalAlignment.center] }
             HStack (spacing: 5) {
                 Image(systemName: "star.fill")
                     .foregroundColor(.yellow)
                 VStack {
                     HStack(spacing: 3) {
-                        if movie.ratings[.imdb]! >= 0 {
-                            Text(formattedRating)
+                        if movie.imdbRating.averageRating >= 0 {
+                            Text(movie.imdbRating.averageRating.formatted())
                                 .font(.title2)
                             Group {
                                 Text("/")
@@ -44,8 +42,62 @@ struct IMDbCondensedView: View {
 }
 
 struct IMDbExpandedView: View {
+    let movie: Movie
+    
     var body: some View {
-        Text("Hi")
+        VStack(alignment: .leading) {
+            HStack {
+                Image("imdbLogo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 20)
+                Spacer()
+                if let pageURL = IMDb.pageURL(for: movie) {
+                    Link(destination: pageURL) {
+                        Image(systemName: "link")
+                    }
+                }
+            }
+            Grid() {
+                GridRow {
+                    Group {
+                        Spacer()
+                        Text("All Ages")
+                        Text("<18")
+                        Text("18-29")
+                        Text("30-44")
+                        Text("45+")
+                    }
+                    .font(.caption)
+                }
+                Divider()
+                GridRow {
+                    Text("All")
+                        .font(.caption)
+                    ForEach(movie.imdbRating.allUserRatings, id: \.self) { rating in
+                        Text("\(rating.formatted())")
+                    }
+                }
+                Divider()
+                GridRow {
+                    Text("Males")
+                        .font(.caption)
+                    ForEach(movie.imdbRating.maleUserRatings, id: \.self) { rating in
+                        Text("\(rating.formatted())")
+                    }
+                }
+                Divider()
+                GridRow {
+                    Text("Females")
+                        .font(.caption)
+                    ForEach(movie.imdbRating.femaleUserRatings, id: \.self) { rating in
+                        Text("\(rating.formatted())")
+                    }
+                }
+            }
+//            .padding(.horizontal, 3)
+        }
+        .padding()
     }
 }
 

@@ -21,6 +21,11 @@ struct TMDb: Codable {
         }
     }
     
+    struct Rating: Codable {
+        var audienceRating: Double = -1
+        var audienceRatingCount: Int = -1
+    }
+    
     static func getMovies(from url: URL) async -> [Movie] {
         do {
             let (data, _) = try await URLSession.shared.data(from: url)

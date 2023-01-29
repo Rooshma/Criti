@@ -17,7 +17,6 @@ struct RottenTomatoesCondensedView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 75)
-                .alignmentGuide(.midLogos) { d in d[VerticalAlignment.center] }
             RottenTomatoesRatingIcon(rating: movie.rottenTomatoesRating.criticRating, type: .critic)
         }
     }
@@ -28,10 +27,18 @@ struct RottenTomatoesExpandedView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Image("rtLogo")
-                .resizable()
-                .scaledToFit()
-                .frame(height: 20)
+            HStack {
+                Image("rtLogo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 20)
+                Spacer()
+                if let pageURL = RottenTomatoes.pageURL(for: movie) {
+                    Link(destination: pageURL) {
+                        Image(systemName: "link")
+                    }
+                }
+            }
             HStack {
                 RottenTomatoesRatingIcon(rating: movie.rottenTomatoesRating.criticRating, type: .critic)
                 VStack(alignment: .leading) {

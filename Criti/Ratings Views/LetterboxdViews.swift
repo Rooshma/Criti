@@ -18,7 +18,6 @@ struct LetterboxdCondensedView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 75)
-                .alignmentGuide(.midLogos) { d in d[VerticalAlignment.center] }
             if movie.letterboxdRating.averageRating > 0 {
                 Text("\(movie.letterboxdRating.averageRating.formatted())")
                     .font(.custom("Graphik-Light", size: 30))
@@ -69,8 +68,14 @@ struct LetterboxdExpandedView: View {
                     .scaledToFit()
                     .frame(height: 20)
                 Spacer()
-                Text("\(movie.letterboxdRating.averageRating.formatted())")
-                    .font(.title)
+                if let pageURL = Letterboxd.pageURL(for: movie) {
+                    Link(destination: pageURL) {
+                        Image(systemName: "link")
+                    }
+                }
+                // This average rating should go somewhere else. On LB it's just above the five star icons on the right side. So far I've avoided that because spacing requirements make the max size too small. Investigate.
+//                Text("\(movie.letterboxdRating.averageRating.formatted())")
+//                    .font(.title)
             }
             .padding([.top, .horizontal])
             HStack(alignment: .bottom, spacing: 1) {

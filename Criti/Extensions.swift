@@ -41,11 +41,26 @@ extension String {
     }
 }
 
+// Could I just have three separate static variables, rather than declaring new enums every time? Check once this works.
 extension VerticalAlignment {
-    enum MidLogos: AlignmentID {
+    enum IMDbAllUsersVerticalCenter: AlignmentID {
         static func defaultValue(in d: ViewDimensions) -> CGFloat {
-            d[.top]
+            d[VerticalAlignment.center]
         }
     }
-    static let midLogos = VerticalAlignment(MidLogos.self)
+    static let imdbMidAll = VerticalAlignment(IMDbAllUsersVerticalCenter.self)
+    
+    enum IMDbMaleUsersVerticalCenter: AlignmentID {
+        static func defaultValue(in d: ViewDimensions) -> CGFloat {
+            d[VerticalAlignment.center]
+        }
+    }
+    static let imdbMidMale = VerticalAlignment(IMDbMaleUsersVerticalCenter.self)
+    
+    enum IMDbFemaleUsersVerticalCenter: AlignmentID {
+        static func defaultValue(in d: ViewDimensions) -> CGFloat {
+            d[VerticalAlignment.center]
+        }
+    }
+    static let imdbMidFemale = VerticalAlignment(IMDbFemaleUsersVerticalCenter.self)
 }

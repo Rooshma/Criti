@@ -10,7 +10,17 @@ import SwiftSoup
 
 struct RottenTomatoes {
     
-    static func getRatings(for movie: Movie) async -> Movie.RottenTomatoesRating {
+    struct Rating: Codable {
+        var criticRating: Int = -1
+        var criticRatingCount: Int = -1
+        var audienceRating: Int = -1
+        var audienceRatingCount: Int = -1
+        var criticConsensus: String = ""
+        var audienceConsensus: String = ""
+        var certifiedFresh = false
+    }
+    
+    static func getRatings(for movie: Movie) async -> Rating {
         let urlTitle = movie.title.lowercased().removeCharacters(from: .punctuationCharacters).replacingOccurrences(of: " ", with: "_")
         do {
             if let url = URL(string: "https://www.rottentomatoes.com/m/\(urlTitle)") {
@@ -24,24 +34,30 @@ struct RottenTomatoes {
                 let criticRatingCount = try Int(scoreBoard.select("a").first()?.text().removeCharacters(from: .decimalDigits.inverted) ?? "") ?? -1
                 let audienceRating = try Int(scoreBoard.attr("audiencescore")) ?? -1
                 let audienceRatingCount = try Int(scoreBoard.select("a").last()?.text().removeCharacters(from: .decimalDigits.inverted) ?? "") ?? -1
-                let certifiedFresh = try scoreBoard.attr("tomatometerstate") == "certified-fresh"
+//                let certifiedFresh = try scoreBoard.attr("tomatometerstate") == "certified-fresh"
                 
                 // Zoom in on what to know section of the document, get critic and audience consensus text
                 let whatToKnow = try doc.select("p.what-to-know__section-body")
                 let criticConsensus = try whatToKnow.select("span").first()?.text() ?? ""
                 let audienceConsensus = try whatToKnow.select("span").last()?.text() ?? ""
                 
-                return Movie.RottenTomatoesRating(criticRating: criticRating, criticRatingCount: criticRatingCount,
+                return Rating(criticRating: criticRating, criticRatingCount: criticRatingCount,
                                                   audienceRating: audienceRating, audienceRatingCount: audienceRatingCount,
                                                   criticConsensus: criticConsensus, audienceConsensus: audienceConsensus)
             }
         } catch {
             print("Error getting Rotten Tomatoes rating")
         }
-        return Movie.RottenTomatoesRating()
+        return Rating()
     }
     
     enum RatingType {
         case critic, audience
     }
+    
+    static func pageURL(for movie: Movie) -> URL? {
+        let urlTitle = movie.title.lowercased().removeCharacters(from: .punctuationCharacters).replacingOccurrences(of: " ", with: "_")
+        return URL(string: "https://www.rottentomatoes.com/m/\(urlTitle)")
+    }
+    
 }

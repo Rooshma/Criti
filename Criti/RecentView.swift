@@ -22,7 +22,6 @@ struct RecentView: View {
                             RecentMovieListView(movie: movie)
                         }
                     }
-                    .padding([.bottom])
                     .navigationTitle("Recent")
                     .foregroundColor(Color("AccentColor"))
                 }
@@ -45,22 +44,13 @@ struct RecentMovieListView: View {
 
     var body: some View {
         VStack {
-            HStack {
-                Text(movie.title)
-                    .font(.title2)
-                    .italic()
-                Spacer()
-                Image(systemName: "chevron.right")
-            }
-            .padding()
-
             HStack(spacing: 0) {
                 PosterView(movie: movie)
-                    .frame(height: 150)
+                    .frame(height: 190)
                     .padding(.leading)
                     .shadow(radius: 10)
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(alignment: .center) {
+                    LazyHGrid(rows: [GridItem(.fixed(90)), GridItem(.fixed(90))]) {
                         ForEach(settings.ratingSources, id: \.self) { ratingSource in
                             CondensedRatingView(movie: movie, ratingSource: ratingSource)
                         }
@@ -68,8 +58,11 @@ struct RecentMovieListView: View {
                     .padding(.horizontal, 5)
                 }
             }
+            
             Divider()
-                .padding(.top)
+                .overlay(.secondary)
+                .padding(.vertical)
+
         }
         .frame(height: 225)
         .foregroundColor(.primary)

@@ -19,47 +19,34 @@ struct Cinemascore {
             case grade = "GRADE"
             // case year = "YEAR"
         }
-        
-        
-        // TODO: MAKE THIS UNNECESSARY. THE NEW CINEMASCORERATING STRUCT SHOULD BE A START FOR DOING THAT.
-        static let lettersToNumbers: [String: Double] = ["A+": 10,
-                                                         "A": 9,
-                                                         "A-": 8,
-                                                         "B+": 7,
-                                                         "B": 6,
-                                                         "B-": 5,
-                                                         "C+": 4,
-                                                         "C": 3,
-                                                         "C-": 2,
-                                                         "F": 1,
-                                                         "N/A": -1]
-        
-        static let numbersToLetters: [Double: String] = [10: "A+",
-                                                         9: "A",
-                                                         8: "A-",
-                                                         7: "B+",
-                                                         6: "B",
-                                                         5: "B-",
-                                                         4: "C+",
-                                                         3: "C",
-                                                         2: "C-",
-                                                         1: "F",
-                                                         -1: "N/A"]
-        
     }
     
-    static func getRatings(for movie: Movie) async -> Double {
+    static let exampleMovies: [String: [String]] = ["A+": ["Titanic (1997)", "The Polar Express (2004)", "The Blind Side (2009)"],
+                                                    "A": ["Avatar (2009)", "Who Framed Roger Rabbit (1988)", "Coach Carter (2005)"],
+                                                    "A-": ["The Abyss (1989)", "Contact (1997)", "A League of Their Own (1992)"],
+                                                    "B+": ["Rocky Balboa (2006)", "A Christmas Carol (2009)", "Inception (2012)"],
+                                                    "B": ["Cast Away (2000)", "Tenet (2020)", "Eternals (2021)"],
+                                                    "B-": ["Blue Velvet (1986)", "Beowulf (2007)", "Major League 3: Back to the Minors (1998)"],
+                                                    "C+": ["Starship Troopers (1997)", "Office Space (1999)", "Uncut Gems (2019)"],
+                                                    "C": ["Boogie Nights (1997)", "The Thin Red Line (1998)", "The Wolf of Wall Street (2013)"],
+                                                    "C-": ["Magnolia (1999)", "Drive (2011)", "The Witch (2016)"],
+                                                    "D+": ["Punch-Drunk Love (2002)", "The New World (2006)", "Hereditary (2018)"],
+                                                    "D": ["American Psycho (2000)", "The Life Aquatic With Steve Zissou (2004)", "The Happening (2008)"],
+                                                    "D-": ["Eyes Wide Shut (1999)", "Vanilla Sky (2001)", "Gigli (2003)"],
+                                                    "F": ["Solaris (2002)", "The Wicker Man (2006)", "mother! (2017)"]]
+    
+    static func getRatings(for movie: Movie) async -> String {
         let urlAppropriateTitle = Data(movie.title.utf8).base64EncodedString()
-        guard let url = URL(string: "https://api.cinemascore.com/guest/search/title/\(urlAppropriateTitle)") else { return -1 }
+        guard let url = URL(string: "https://api.cinemascore.com/guest/search/title/\(urlAppropriateTitle)") else { return "" }
         
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             let jsonResponse = try JSONDecoder().decode([Cinemascore.SearchResponse].self, from: data)
-            return Cinemascore.SearchResponse.lettersToNumbers[jsonResponse[0].grade] ?? -1
+            return jsonResponse[0].grade
         } catch {
             print("Error getting Cinemascore data")
             print(error)
-            return -1
+            return ""
         }
     }
     

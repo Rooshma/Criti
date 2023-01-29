@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct Movie: Identifiable, Codable {
+    
     var id: Int = -1
     var imdbID: String = ""
     var title: String = "Unknown title"
@@ -35,29 +36,16 @@ struct Movie: Identifiable, Codable {
         } else { return "Unknown release date" }
     }
 
-    /// AFAIK this is only used during decode, and is then useless. If they could be removed for the decode process as well that would be ideal.
+    // AFAIK this is only used during decode, and is then useless. If they could be removed for the decode process as well that would be ideal.
     var tmdbVoteAverage: Double = -1
     var tmdbVoteCount: Int = -1
   
-    var tmdbRating = TMDbRating()
-    var imdbRating = IMDbRating()
-    var rottenTomatoesRating = RottenTomatoesRating()
-    var metacriticRating = MetacriticRating()
-    var cinemascoreRating = CinemaScoreRating()
-    var letterboxdRating = LetterboxdRating()
-    
-    /// Ultimately I think it would be best to get rid of this dictionary approach.
-    var ratings: [RatingSource: Double] = [.imdb: -1,
-                                           .tmdb: -1,
-                                           .rottenTomatoes: -1,
-                                           .metacritic: -1,
-                                           .letterboxd: -1,
-                                           .cinemascore: -1]
-    var ratingCounts: [RatingSource: Int] = [.imdb: 0,
-                                             .tmdb: 0,
-                                             .rottenTomatoes: 0,
-                                             .metacritic: 0,
-                                             .letterboxd: 0]
+    var tmdbRating = TMDb.Rating()
+    var imdbRating = IMDb.Rating()
+    var rottenTomatoesRating = RottenTomatoes.Rating()
+    var metacriticRating = Metacritic.Rating()
+    var cinemascoreRating = ""
+    var letterboxdRating = Letterboxd.Rating()
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -69,45 +57,8 @@ struct Movie: Identifiable, Codable {
         case tmdbVoteCount = "vote_count"
     }
     
-    struct TMDbRating: Codable {
-        var audienceRating: Double = -1
-        var audienceRatingCount: Int = -1
-    }
-    
-    struct RottenTomatoesRating: Codable {
-        var criticRating: Int = -1
-        var criticRatingCount: Int = -1
-        var audienceRating: Int = -1
-        var audienceRatingCount: Int = -1
-        var criticConsensus: String = ""
-        var audienceConsensus: String = ""
-        var certifiedFresh = false
-    }
-    
-    struct LetterboxdRating: Codable {
-        var averageRating: Double = -1
-        var histogram: [Int] = []
-    }
-    
-    struct IMDbRating: Codable {
-        var averageRating: Int = -1
-        var ratingCount: Int = -1
-        /// IMDb does show rating histogram overall, and broken down for different demos. Could be something to look into.
-    }
-    
-    struct MetacriticRating: Codable {
-        var criticRating: Int = -1
-        var criticRatingCount: Int = -1
-        var audienceRating: Int = -1
-        var audienceRatingCount: Int = -1
-    }
-    
-    struct CinemaScoreRating: Codable {
-        var audienceRating: String = ""
-    }
-    
-    /// This custom initializer is necessary for the sake of TMDb's nonstandard JSON for null dates (it returns an empty string, not null).
-    /// This is also used to get JSON values for "vote_average" and "vote_count" into a TMDbRating struct.
+    // This custom initializer is necessary for the sake of TMDb's nonstandard JSON for null dates (it returns an empty string, not null).
+    // This is also used to get JSON values for "vote_average" and "vote_count" into a TMDbRating struct.
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -116,7 +67,7 @@ struct Movie: Identifiable, Codable {
         self.id = try container.decode(Int.self, forKey: .id)
         self.title = try container.decode(String.self, forKey: .title)
         
-        self.tmdbRating = TMDbRating(audienceRating: try container.decode(Double.self, forKey: .tmdbVoteAverage) * 10,
+        self.tmdbRating = TMDb.Rating(audienceRating: try container.decode(Double.self, forKey: .tmdbVoteAverage) * 10,
                                      audienceRatingCount: try container.decode(Int.self, forKey: .tmdbVoteCount))
         
         
@@ -124,6 +75,24 @@ struct Movie: Identifiable, Codable {
             if tempStringDate.isEmpty { self.releaseDate = nil }
             else { self.releaseDate = try container.decode(Date.self, forKey: .releaseDate) }
     }
+    
+    static func getRemainingMovieDetails(for movies: inout [Movie]) async -> [Movie] {
+        // Is there any reason each movie can't be passed inout to each function, rather than declaring a new movie constant?
+        // Change back to recentmovies.indices. Right now it's truncated to limit the number of calls.
+        for i in movies[0...2].indices {
+            let imdbIDTemp = movies[i]
+            movies[i].imdbID = await TMDb.getIMDbID(for: imdbIDTemp)
+            await OMDb.getOMDbData(for: &movies[i])
+            let movie = movies[i]
+            movies[i].cinemascoreRating = await Cinemascore.getRatings(for: movie)
+            movies[i].letterboxdRating = await Letterboxd.getRatings(for: movie)
+            movies[i].rottenTomatoesRating = await RottenTomatoes.getRatings(for: movie)
+            movies[i].metacriticRating = await Metacritic.getRatingFor(movie)
+            movies[i].imdbRating = await IMDb.getRating(for: movie)
+        }
+        return movies
+    }
+    
 }
 
 

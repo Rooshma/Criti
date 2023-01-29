@@ -36,24 +36,24 @@ struct OMDb: Codable {
             movie.length = jsonResponse.length
             movie.genres = jsonResponse.genre.components(separatedBy: ", ")
             
-            for rating in jsonResponse.ratings {
-                switch rating["Source"] {
+//            for rating in jsonResponse.ratings {
+//                switch rating["Source"] {
 //                    case "Rotten Tomatoes":
 //                        let trimmedRating = rating["Value"]?.dropLast(1)
 //                        movie.ratings[.rottenTomatoes] = Double(trimmedRating ?? "0")
-                    case "Internet Movie Database":
-                        let trimmedRating = rating["Value"]?.dropLast(3)
-                        movie.ratings[.imdb] = Double(trimmedRating ?? "0")
-                        if let imdbVoteCount = Int(jsonResponse.imdbVotes.filter( { $0 != "," } )) {
-                        movie.ratingCounts[.imdb] = imdbVoteCount
-                        }
+//                    case "Internet Movie Database":
+//                        let trimmedRating = rating["Value"]?.dropLast(3)
+//                        movie.ratings[.imdb] = Double(trimmedRating ?? "0")
+//                        if let imdbVoteCount = Int(jsonResponse.imdbVotes.filter( { $0 != "," } )) {
+//                        movie.ratingCounts[.imdb] = imdbVoteCount
+//                        }
 //                    case "Metacritic":
 //                        let trimmedRating = rating["Value"]?.dropLast(4)
 //                        movie.ratings[.metacritic] = Double(trimmedRating ?? "0")
-                    default:
-                        print("OMDb Skipped rating: \(rating)")
-                }
-            }
+//                    default:
+//                        print("OMDb Skipped rating: \(rating)")
+//                }
+//            }
         } catch {
             print("Error getting OMDb data")
             print(error)
@@ -62,5 +62,5 @@ struct OMDb: Codable {
     
 }
 
-/// Example search response below.
+// Example search response below.
 // {"Title":"Dune","Year":"2021","Rated":"PG-13","Released":"22 Oct 2021","Runtime":"155 min","Genre":"Action, Adventure, Drama","Director":"Denis Villeneuve","Writer":"Jon Spaihts, Denis Villeneuve, Eric Roth","Actors":"Timothée Chalamet, Rebecca Ferguson, Zendaya","Plot":"A noble family becomes embroiled in a war for control over the galaxy's most valuable asset while its heir becomes troubled by visions of a dark future.","Language":"English, Mandarin","Country":"Canada, United States","Awards":"Won 6 Oscars. 168 wins & 281 nominations total","Poster":"https://m.media-amazon.com/images/M/MV5BN2FjNmEyNWMtYzM0ZS00NjIyLTg5YzYtYThlMGVjNzE1OGViXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_SX300.jpg","Ratings":[{"Source":"Internet Movie Database","Value":"8.0/10"},{"Source":"Rotten Tomatoes","Value":"83%"},{"Source":"Metacritic","Value":"74/100"}],"Metascore":"74","imdbRating":"8.0","imdbVotes":"625,484","imdbID":"tt1160419","Type":"movie","DVD":"22 Oct 2021","BoxOffice":"$108,327,830","Production":"N/A","Website":"N/A","Response":"True"}

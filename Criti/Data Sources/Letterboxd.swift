@@ -10,7 +10,12 @@ import SwiftSoup
 
 struct Letterboxd {
     
-    static func getRatings(for movie: Movie) async -> Movie.LetterboxdRating {
+    struct Rating: Codable {
+        var averageRating: Double = -1
+        var histogram: [Int] = []
+    }
+    
+    static func getRatings(for movie: Movie) async -> Rating {
         let urlTitle = movie.title.lowercased().removeCharacters(from: .punctuationCharacters).replacingOccurrences(of: " ", with: "-")
         do {
             if let url = URL(string: "https://letterboxd.com/csi/film/\(urlTitle)/rating-histogram/") {
@@ -25,11 +30,17 @@ struct Letterboxd {
                 for rating in ratingSpread {
                     try histogram.append(Int(rating.text().components(separatedBy: " ")[0].removeCharacters(from: .decimalDigits.inverted)) ?? -1)
                 }
-                return Movie.LetterboxdRating(averageRating: averageRating, histogram: histogram)
+                return Rating(averageRating: averageRating, histogram: histogram)
             }
         } catch {
             print("Error getting Letterboxd rating")
         }
-        return Movie.LetterboxdRating()
+        return Rating()
     }
+    
+    static func pageURL(for movie: Movie) -> URL? {
+        let urlTitle = movie.title.lowercased().removeCharacters(from: .punctuationCharacters).replacingOccurrences(of: " ", with: "-")
+        return URL(string: "https://letterboxd.com/film/\(urlTitle)/")
+    }
+    
 }

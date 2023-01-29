@@ -18,7 +18,7 @@ struct RatingSourceDetailView: View {
             case .letterboxd: LetterboxdInfoView()
             case .cinemascore: CinemascoreInfoView()
             case .metacritic: MetacriticInfoView()
-            default: Text("N/A")
+//            default: Text("N/A")
         }
     }
 }

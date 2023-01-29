@@ -9,7 +9,6 @@ import SwiftUI
 
 struct TMDbCondensedView: View {
     let movie: Movie
-    let formattedRating: String
     var fillColor: Color {
         switch movie.tmdbRating.audienceRating {
             case 70 ... 100: return Color("TMDbGreen")
@@ -25,7 +24,6 @@ struct TMDbCondensedView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 75)
-                .alignmentGuide(.midLogos) { d in d[VerticalAlignment.center] }
             ZStack {
                 Circle()
                     .fill(Color("TMDbDarkBackground"))

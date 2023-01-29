@@ -17,13 +17,13 @@ struct ExpandedRatingView: View {
                 .opacity(0.15)
             switch ratingSource {
                 case .tmdb: TMDbExpandedView()
-                case .imdb: IMDbExpandedView()
+                case .imdb: IMDbExpandedView(movie: movie)
                 case .rottenTomatoes: RottenTomatoesExpandedView(movie: movie)
                 case .metacritic: MetacriticExpandedView(movie: movie)
-                case .cinemascore: CinemascoreCondensedView(movie: movie).padding()
+                case .cinemascore: CinemascoreExpandedView(movie: movie)
                 case .letterboxd: LetterboxdExpandedView(movie: movie)
-                default:
-                    Text("Error")
+//                default:
+//                    Text("Error")
             }
         }
     }

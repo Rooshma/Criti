@@ -10,7 +10,15 @@ import SwiftSoup
 
 struct Metacritic {
     
-    static func getRatingFor(_ movie: Movie) async -> Movie.MetacriticRating {
+    struct Rating: Codable {
+        var criticRating: Int = -1
+        var criticRatingCount: Int = -1
+        var audienceRating: Int = -1
+        var audienceRatingCount: Int = -1
+        var audienceRatingOutOfTen: Double { Double(audienceRating) / 10 }
+    }
+    
+    static func getRatingFor(_ movie: Movie) async -> Rating {
         let urlTitle = movie.title.lowercased().removeCharacters(from: .punctuationCharacters).replacingOccurrences(of: " ", with: "-")
         do {
             if let url = URL(string: "https://www.metacritic.com/movie/\(urlTitle)") {
@@ -27,13 +35,13 @@ struct Metacritic {
                 let audienceRatingInt = Int(audienceRatingDouble * 10)
                 let audienceRatingCount = try Int(audienceSummary.select("span.based_on").text().trimmingCharacters(in: .decimalDigits.inverted)) ?? -1
 
-                return Movie.MetacriticRating(criticRating: criticRating, criticRatingCount: criticRatingCount, audienceRating: audienceRatingInt, audienceRatingCount: audienceRatingCount)
+                return Rating(criticRating: criticRating, criticRatingCount: criticRatingCount, audienceRating: audienceRatingInt, audienceRatingCount: audienceRatingCount)
             }
         }
         catch {
             print("Error getting Metacritic rating")
         }
-        return Movie.MetacriticRating()
+        return Rating()
     }
     
     static func consensusPhrase(for rating: Int) -> String {
@@ -47,13 +55,18 @@ struct Metacritic {
         }
     }
     
-//    static func fillColor(for rating: Int) -> Color {
-//        switch rating {
-//            case 70...100: return Color("MCGreen")
-//            case 40..<70: return Color("MCYellow")
-//            case 0..<40: return Color("MCRed")
-//            default: return Color("MCGray")
-//        }
-//    }
+    static func fillColor(for rating: Int) -> String {
+        switch rating {
+            case 60...100: return "MCGreen"
+            case 40..<60: return "MCYellow"
+            case 0..<40: return "MCRed"
+            default: return "MCGray"
+        }
+    }
+    
+    static func pageURL(for movie: Movie) -> URL? {
+        let urlTitle = movie.title.lowercased().removeCharacters(from: .punctuationCharacters).replacingOccurrences(of: " ", with: "-")
+        return URL(string: "https://www.metacritic.com/movie/\(urlTitle)")
+    }
     
 }

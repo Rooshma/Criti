@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MovieDetailView: View {
     let movie: Movie
-    let ratingSources: [RatingSource] = [.rottenTomatoes, .letterboxd, .cinemascore, .metacritic]
+    let ratingSources: [RatingSource] = [.imdb, .rottenTomatoes, .letterboxd, .cinemascore, .metacritic]
     
     var body: some View {
         ScrollView {

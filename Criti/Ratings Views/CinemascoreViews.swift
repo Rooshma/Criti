@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CinemascoreCondensedView: View {
     let movie: Movie
-    var letterGrade: String { Cinemascore.SearchResponse.numbersToLetters[movie.ratings[.cinemascore]!]! }
     
     var body: some View {
         VStack {
@@ -17,22 +16,57 @@ struct CinemascoreCondensedView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 75)
-                .alignmentGuide(.midLogos) { d in d[VerticalAlignment.center] }
-            ZStack {
-                Rectangle()
-                    .fill(LinearGradient(colors: [Color("CinemascoreGradientDark"),
-                                                  Color("CinemascoreGradientLight")],
-                                         startPoint: .bottomLeading,
-                                         endPoint: .topTrailing))
-                Text(letterGrade)
-                    .font(.custom("Baskerville", size: 30))
-                    .fontWeight(.semibold)
-                    .minimumScaleFactor(0.5)
-                    .padding(5)
-                    .foregroundColor(.white)
-            }
-            .frame(width: 50, height: 50)
+            CinemascoreLetterGradeView(movie: movie)
         }
+    }
+}
+
+struct CinemascoreExpandedView: View {
+    let movie: Movie
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Image("csLogo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 75)
+                Spacer()
+            }
+            .padding(.bottom, 5)
+            
+            HStack {
+                CinemascoreLetterGradeView(movie: movie)
+                if let exampleMovies = Cinemascore.exampleMovies[movie.cinemascoreRating]?.formatted(.list(type: .and)) {
+                    Text("Other movies with this score include\n\(exampleMovies)")
+                        .font(.caption)
+                        .frame(maxHeight: .infinity)
+                        .padding(.leading, 5)
+                }
+            }
+        }
+        .padding()
+    }
+}
+
+struct CinemascoreLetterGradeView: View {
+    let movie: Movie
+
+    var body: some View {
+        ZStack {
+            Rectangle()
+                .fill(LinearGradient(colors: [Color("CinemascoreGradientDark"),
+                                              Color("CinemascoreGradientLight")],
+                                     startPoint: .bottomLeading,
+                                     endPoint: .topTrailing))
+            Text(movie.cinemascoreRating)
+                .font(.custom("Baskerville", size: 30))
+                .fontWeight(.semibold)
+                .minimumScaleFactor(0.5)
+                .padding(5)
+                .foregroundColor(.white)
+        }
+        .frame(width: 50, height: 50)
     }
 }
 
