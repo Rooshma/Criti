@@ -35,18 +35,18 @@ struct Cinemascore {
                                                     "D-": ["Eyes Wide Shut (1999)", "Vanilla Sky (2001)", "Gigli (2003)"],
                                                     "F": ["Solaris (2002)", "The Wicker Man (2006)", "mother! (2017)"]]
     
-    static func getRatings(for movie: Movie) async -> String {
+    static func getRatings(for movie: inout Movie) async {
         let urlAppropriateTitle = Data(movie.title.utf8).base64EncodedString()
-        guard let url = URL(string: "https://api.cinemascore.com/guest/search/title/\(urlAppropriateTitle)") else { return "" }
+        guard let url = URL(string: "https://api.cinemascore.com/guest/search/title/\(urlAppropriateTitle)") else { return }
         
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             let jsonResponse = try JSONDecoder().decode([Cinemascore.SearchResponse].self, from: data)
-            return jsonResponse[0].grade
+            movie.cinemascoreRating = jsonResponse[0].grade
         } catch {
-            print("Error getting Cinemascore data")
+            print("Error getting Cinemascore data for \(movie.title)")
             print(error)
-            return ""
+            return
         }
     }
     

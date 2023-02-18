@@ -18,7 +18,7 @@ struct IMDb {
         var femaleUserRatings: [Double] = []
     }
     
-    static func getRating(for movie: Movie) async -> Rating {
+    static func getRating(for movie: inout Movie) async {
         do {
             if let url = URL(string: "https://www.imdb.com/title/\(movie.imdbID)/ratings") {
                 let (data, _) = try await URLSession.shared.data(from: url)
@@ -30,21 +30,19 @@ struct IMDb {
                 guard summarySection.count >= 15 else {
                     print("Error getting IMDb rating for id \(movie.imdbID)")
                     print(summarySection)
-                    return Rating() }
+                    return }
                 
                 let allUsers = summarySection[0...4].map( { Double($0) ?? -1 } )
                 let maleUsers = summarySection[5...9].map( { Double($0) ?? -1 } )
                 let femaleUsers = summarySection[10...14].map( { Double($0) ?? -1 } )
-                
-                print(allUsers, femaleUsers, maleUsers)
-                
-                return Rating(averageRating: allUsers[0], ratingCount: -1, allUserRatings: allUsers, maleUserRatings: maleUsers, femaleUserRatings: femaleUsers)
+                                
+                movie.imdbRating = Rating(averageRating: allUsers[0], ratingCount: -1, allUserRatings: allUsers, maleUserRatings: maleUsers, femaleUserRatings: femaleUsers)
             }
         }
         catch {
             print("Error getting IMDb rating")
         }
-        return Rating()
+        return
     }
     
     static func pageURL(for movie: Movie) -> URL? { URL(string: "https://www.imdb.com/title/\(movie.imdbID)/ratings") }

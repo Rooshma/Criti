@@ -20,7 +20,7 @@ struct RottenTomatoes {
         var certifiedFresh = false
     }
     
-    static func getRatings(for movie: Movie) async -> Rating {
+    static func getRatings(for movie: inout Movie) async {
         let urlTitle = movie.title.lowercased().removeCharacters(from: .punctuationCharacters).replacingOccurrences(of: " ", with: "_")
         do {
             if let url = URL(string: "https://www.rottentomatoes.com/m/\(urlTitle)") {
@@ -41,14 +41,14 @@ struct RottenTomatoes {
                 let criticConsensus = try whatToKnow.select("span").first()?.text() ?? ""
                 let audienceConsensus = try whatToKnow.select("span").last()?.text() ?? ""
                 
-                return Rating(criticRating: criticRating, criticRatingCount: criticRatingCount,
+                movie.rottenTomatoesRating = Rating(criticRating: criticRating, criticRatingCount: criticRatingCount,
                                                   audienceRating: audienceRating, audienceRatingCount: audienceRatingCount,
                                                   criticConsensus: criticConsensus, audienceConsensus: audienceConsensus)
             }
         } catch {
             print("Error getting Rotten Tomatoes rating")
         }
-        return Rating()
+        return
     }
     
     enum RatingType {

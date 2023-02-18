@@ -77,18 +77,15 @@ struct Movie: Identifiable, Codable {
     }
     
     static func getRemainingMovieDetails(for movies: inout [Movie]) async -> [Movie] {
-        // Is there any reason each movie can't be passed inout to each function, rather than declaring a new movie constant?
         // Change back to recentmovies.indices. Right now it's truncated to limit the number of calls.
-        for i in movies[0...2].indices {
-            let imdbIDTemp = movies[i]
-            movies[i].imdbID = await TMDb.getIMDbID(for: imdbIDTemp)
+        for i in 0 ..< 1 {
+            await TMDb.getIMDbID(for: &movies[i])
             await OMDb.getOMDbData(for: &movies[i])
-            let movie = movies[i]
-            movies[i].cinemascoreRating = await Cinemascore.getRatings(for: movie)
-            movies[i].letterboxdRating = await Letterboxd.getRatings(for: movie)
-            movies[i].rottenTomatoesRating = await RottenTomatoes.getRatings(for: movie)
-            movies[i].metacriticRating = await Metacritic.getRatingFor(movie)
-            movies[i].imdbRating = await IMDb.getRating(for: movie)
+            await Cinemascore.getRatings(for: &movies[i])
+            await Letterboxd.getRatings(for: &movies[i])
+            await RottenTomatoes.getRatings(for: &movies[i])
+            await Metacritic.getRatingFor(&movies[i])
+            await IMDb.getRating(for: &movies[i])
         }
         return movies
     }

@@ -8,8 +8,6 @@
 
 Refactor recent view viewmodel (and maybe search view as well) to get remaining movie details more parsimoniously
 
-Maybe factor things from movie struct out to the respective rating sources? 
-
 ## All Expanded views
 
 Modify links to open respective apps, if possible

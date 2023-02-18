@@ -15,7 +15,7 @@ struct Letterboxd {
         var histogram: [Int] = []
     }
     
-    static func getRatings(for movie: Movie) async -> Rating {
+    static func getRatings(for movie: inout Movie) async {
         let urlTitle = movie.title.lowercased().removeCharacters(from: .punctuationCharacters).replacingOccurrences(of: " ", with: "-")
         do {
             if let url = URL(string: "https://letterboxd.com/csi/film/\(urlTitle)/rating-histogram/") {
@@ -30,12 +30,12 @@ struct Letterboxd {
                 for rating in ratingSpread {
                     try histogram.append(Int(rating.text().components(separatedBy: " ")[0].removeCharacters(from: .decimalDigits.inverted)) ?? -1)
                 }
-                return Rating(averageRating: averageRating, histogram: histogram)
+                movie.letterboxdRating = Rating(averageRating: averageRating, histogram: histogram)
             }
         } catch {
             print("Error getting Letterboxd rating")
         }
-        return Rating()
+        return //Rating()
     }
     
     static func pageURL(for movie: Movie) -> URL? {

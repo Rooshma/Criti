@@ -88,6 +88,7 @@
 		4D776BB92939B35A00CABD60 /* RecentView-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecentView-ViewModel.swift"; sourceTree = "<group>"; };
 		4D91F6172975AF1000061A34 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		4D96CC73296F905F00F2E637 /* Example-Movie */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Example-Movie"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.json; };
+		4D9753D5298CA9D9001880BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4DB80FA627FE161500E22809 /* Criti.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Criti.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DB80FA927FE161500E22809 /* CritiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CritiApp.swift; sourceTree = "<group>"; };
 		4DB80FAB27FE161500E22809 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -186,6 +187,7 @@
 		4DB80FA827FE161500E22809 /* Criti */ = {
 			isa = PBXGroup;
 			children = (
+				4D9753D5298CA9D9001880BB /* Info.plist */,
 				4DB923EC297B7F50006AEDB6 /* TODO.md */,
 				4DB80FA927FE161500E22809 /* CritiApp.swift */,
 				4DB80FAB27FE161500E22809 /* MainView.swift */,
@@ -566,6 +568,7 @@
 				DEVELOPMENT_TEAM = GV5885HU67;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Criti/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -599,6 +602,7 @@
 				DEVELOPMENT_TEAM = GV5885HU67;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Criti/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

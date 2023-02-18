@@ -42,16 +42,16 @@ struct TMDb: Codable {
         return []
     }
     
-    static func getIMDbID(for movie: Movie) async -> String {
-        guard let url = URL(string: "https://api.themoviedb.org/3/movie/\(movie.id)/external_ids?api_key=\(APIKeys.TMDB)") else { return "" }
+    static func getIMDbID(for movie: inout Movie) async {
+        guard let url = URL(string: "https://api.themoviedb.org/3/movie/\(movie.id)/external_ids?api_key=\(APIKeys.TMDB)") else { return }
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             let jsonResponse = try JSONDecoder().decode(TMDb.ExternalIDsResponse.self, from: data)
-            return jsonResponse.imdbID
+            movie.imdbID = jsonResponse.imdbID
         } catch {
             print("error getting IMDb ids")
             print(error)
-            return ""
+            return
         }
     }
     

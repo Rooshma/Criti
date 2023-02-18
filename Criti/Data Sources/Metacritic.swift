@@ -18,7 +18,7 @@ struct Metacritic {
         var audienceRatingOutOfTen: Double { Double(audienceRating) / 10 }
     }
     
-    static func getRatingFor(_ movie: Movie) async -> Rating {
+    static func getRatingFor(_ movie: inout Movie) async {
         let urlTitle = movie.title.lowercased().removeCharacters(from: .punctuationCharacters).replacingOccurrences(of: " ", with: "-")
         do {
             if let url = URL(string: "https://www.metacritic.com/movie/\(urlTitle)") {
@@ -35,13 +35,13 @@ struct Metacritic {
                 let audienceRatingInt = Int(audienceRatingDouble * 10)
                 let audienceRatingCount = try Int(audienceSummary.select("span.based_on").text().trimmingCharacters(in: .decimalDigits.inverted)) ?? -1
 
-                return Rating(criticRating: criticRating, criticRatingCount: criticRatingCount, audienceRating: audienceRatingInt, audienceRatingCount: audienceRatingCount)
+                movie.metacriticRating = Rating(criticRating: criticRating, criticRatingCount: criticRatingCount, audienceRating: audienceRatingInt, audienceRatingCount: audienceRatingCount)
             }
         }
         catch {
             print("Error getting Metacritic rating")
         }
-        return Rating()
+        return 
     }
     
     static func consensusPhrase(for rating: Int) -> String {

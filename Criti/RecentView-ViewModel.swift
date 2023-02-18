@@ -23,6 +23,7 @@ extension RecentView {
             recentMovies = await Movie.getRemainingMovieDetails(for: &tempMovies)
             recentMoviesAge = Date.now
         }
+
     }
     
 }
