@@ -95,7 +95,6 @@ struct IMDbExpandedView: View {
                     }
                 }
             }
-//            .padding(.horizontal, 3)
         }
         .padding()
     }

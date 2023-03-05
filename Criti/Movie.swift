@@ -78,7 +78,7 @@ struct Movie: Identifiable, Codable {
     
     static func getRemainingMovieDetails(for movies: inout [Movie]) async -> [Movie] {
         // Change back to recentmovies.indices. Right now it's truncated to limit the number of calls.
-        for i in 0 ..< 1 {
+        for i in movies.indices {
             await TMDb.getIMDbID(for: &movies[i])
             await OMDb.getOMDbData(for: &movies[i])
             await Cinemascore.getRatings(for: &movies[i])

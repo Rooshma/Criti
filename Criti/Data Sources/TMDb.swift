@@ -34,7 +34,14 @@ struct TMDb: Codable {
             dateFormatter.dateFormat = .localizedStringWithFormat("yyyy-MM-dd")
             decoder.dateDecodingStrategy = .formatted(dateFormatter)
             let jsonResponse = try decoder.decode(TMDb.QueryResponse.self, from: data)
-            return jsonResponse.results
+            
+            // Currently, this trims the movie array for speed reasons. Official API access would allow for a larger array.
+            var trimmedMovieArray: [Movie] = []
+            for i in 0...3 {
+                trimmedMovieArray.append(jsonResponse.results[i])
+            }
+            
+            return trimmedMovieArray //jsonResponse.results
         } catch {
             print("Error getting or decoding JSON from TMDb")
             print(error)

@@ -15,7 +15,6 @@ extension RecentView {
         
         var recentMoviesAge = Date.distantPast
         
-        // I don't understand what @Sendable is/does. Investigate further.
         @Sendable func getRecentMovies() async {
             guard let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(APIKeys.TMDB)&language=en-US&page=1") else { return }
             recentMovies = await TMDb.getMovies(from: url)
